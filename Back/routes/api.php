@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/book/update/{book}', [BookController::class, 'update']);
     Route::delete('/book/destroy/{book}', [BookController::class, 'destroy']);
     // Route::get('/book/search/', [BookController::class, 'search']);
+    Route::get('/author/get', [AuthorController::class, 'getauthors']);
     Route::get('/author', [AuthorController::class, 'index']);
     Route::post('/author/store/', [AuthorController::class, 'store']);
     Route::put('/author/update/{author}', [AuthorController::class, 'update']);

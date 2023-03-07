@@ -29,6 +29,10 @@ class AuthorController extends Controller
         return response()->json(['authors' => Author::with('books')->paginate(6), 'user' => Auth::user()]);
     }
 
+    public function getauthors()
+    {
+        return response()->json(['authors' => Author::select('id', 'name')->get()]);
+    }
 
     /**
      * Store a newly created resource in storage.

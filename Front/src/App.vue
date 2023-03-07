@@ -1,20 +1,15 @@
 <script setup>
+import NavBarComponent from './components/NavBarComponent.vue';
+
+components: { NavBarComponent }
+
+const loggedIn = localStorage.getItem('user')
+
 </script>
 
 <template>
-  <html>
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/dist/output.css" rel="stylesheet">
-  </head>
-
-  <body>
-    <router-view></router-view>
-  </body>
-
-  </html>
+  <NavBarComponent v-if="loggedIn" />
+  <router-view></router-view>
 </template>
 
 <style scoped></style>

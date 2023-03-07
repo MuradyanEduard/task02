@@ -1,37 +1,64 @@
 <script setup>
-import NavBarComponent from '../../components/NavBarComponent.vue';
-components: { NavBarComponent }
+import { ref, reactive } from 'vue'
+import Multiselect from 'vue-multiselect'
 
-const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-defineProps(['user', 'authors', 'messages', 'errors'])
+components: { Multiselect }
 
+const authors = ref([])
 
-$(document).ready(function () {
-    $('.js-example-basic-multiple').select2({
-        width: '100%'
-    });
+const errors = ref({
+    email: "",
+    password: "",
+})
 
-    $(".js-example-basic-multiple option").each(function () {
-        $(this).siblings('[value="' + this.value + '"]').remove();
-    });
-});
+const message = ref("")
+
+const user = JSON.parse(localStorage.getItem('user'))
+getAuthors()
+async function getAuthors() {
+    const response = await fetch('http://127.0.0.1:8000/api/author/get', {
+        method: 'GET',
+        headers: {
+            "Authorization": 'Bearer ' + user.api_token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify()
+    })
+
+    const respData = await response.json()
+
+    if (response.ok) {
+        authors.value = respData.authors
+        // books.value = respData.books
+        console.log(respData.authors)
+    } else {
+        console.log(respData.authors)
+    }
+}
+// $(document).ready(function () {
+//     $('.js-example-basic-multiple').select2({
+//         width: '100%'
+//     });
+
+//     $(".js-example-basic-multiple option").each(function () {
+//         $(this).siblings('[value="' + this.value + '"]').remove();
+//     });
+// });
 
 
 </script>
 
 <template>
-    <NavBarComponent :user="user" />
     <div class="m-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <div v-for="m in messages"
+        <div v-for="message in messages"
             class="p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-            <span class="font-medium"> {{ m }} </span>
+            <span class="font-medium"> {{ message }} </span>
         </div>
-        <a href="#">
-            <img class="rounded-t-lg" src="/images/book.jpg" alt="" />
-        </a>
+
+        <img class="rounded-t-lg" src="/images/book.jpg" alt="" />
+
         <div class="p-5">
-            <form id="form-create" :action="route('book.store')" method="POST">
-                <input type="hidden" name="_token" :value=csrf>
+            <form @submit.prevent="createBook">
                 <div class="mb-3">
                     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Book
                         Title</label>
@@ -44,9 +71,7 @@ $(document).ready(function () {
                     class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mt-3 rounded relative" role="alert">
                     <span class="block sm:inline">
                         <div class="col-12">
-                            <div class="alert alert-danger">
-                                {{ errors.title }}
-                            </div>
+                            <div class="alert alert-danger" :v-html="errors.title"> </div>
                         </div>
                     </span>
                 </div>
@@ -63,9 +88,7 @@ $(document).ready(function () {
                     class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mt-3 rounded relative" role="alert">
                     <span class="block sm:inline">
                         <div class="col-12">
-                            <div class="alert alert-danger">
-                                {{ errors.count }}
-                            </div>
+                            <div class="alert alert-danger" :v-html="errors.count"> </div>
                         </div>
                     </span>
                 </div>
@@ -81,14 +104,16 @@ $(document).ready(function () {
                     class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mt-3 rounded relative" role="alert">
                     <span class="block sm:inline">
                         <div class="col-12">
-                            <div class="alert alert-danger">
-                                {{ errors.price }}
-                            </div>
+                            <div class="alert alert-danger" :v-html="errors.price"> </div>
                         </div>
                     </span>
                 </div>
                 <div v-if="user.role == 0">
                     <h2 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Authors:</h2>
+                    <div>
+                        <Multiselect :options="authors.name"> </Multiselect>
+                    </div>
+
                     <select class="js-example-basic-multiple" name="authors[]" multiple="multiple">
                         <option v-for="author in authors" :value="author.id">{{ author.name }}</option>
                     </select>
@@ -115,5 +140,8 @@ $(document).ready(function () {
         </div>
     </div>
 </template>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
 
 

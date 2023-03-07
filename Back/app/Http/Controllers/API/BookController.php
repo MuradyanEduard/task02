@@ -33,9 +33,9 @@ class BookController extends Controller
                 })
                 ->paginate(6);
 
-            return response()->json(['books' => $books, 'user' => Auth::user(), 'basket' => Session::get('basket')]);
+            return response()->json(['books' => $books, 'basket' => Session::get('basket')]);
         } else
-            return response()->json(['books' => Book::with('authors')->paginate(6), 'user' => Auth::user(), 'basket' => Session::get('basket')]);
+            return response()->json(['books' => Book::with('authors')->paginate(6), 'basket' => Session::get('basket')]);
     }
 
 
