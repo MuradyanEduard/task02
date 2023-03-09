@@ -1,26 +1,41 @@
 <script setup>
-import BookComponent from '../../components/BookComponent.vue';
-import NavBarComponent from '../../components/NavBarComponent.vue';
+import { ref } from 'vue';
+import BookComponent from '../../BookComponent.vue';
 
-components: { BookComponent, NavBarComponent }
-defineProps(['user', 'book', 'messages', 'errors'])
-
-
-$(document).ready(function () {
-    $('.js-example-basic-multiple').select2({
-        width: '100%'
-    });
-
-    $(".js-example-basic-multiple option").each(function () {
-        $(this).siblings('[value="' + this.value + '"]').remove();
-    });
+components: { BookComponent }
+const user = JSON.parse(localStorage.getItem('user'))
+const id = window.location.href.split("/").slice(-1)[0];
+const book = ref({
+    title: "",
+    books: "",
+    authors: []
 });
 
+getBook()
+
+async function getBook() {
+    const response = await fetch('http://127.0.0.1:8000/api/book/show/' + id, {
+        method: 'GET',
+        headers: {
+            "Authorization": 'Bearer ' + user.api_token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify()
+    })
+
+    const respData = await response.json()
+
+    if (response.ok) {
+        book.value = respData.book
+        console.log(respData.book)
+    } else {
+        console.log(respData.books)
+    }
+}
 
 </script>
 
 <template>
-    <NavBarComponent :user="user" />
     <div
         class="m-auto  max-w-[80%] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-wrap justify-center">

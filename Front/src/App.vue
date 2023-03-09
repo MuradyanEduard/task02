@@ -1,9 +1,10 @@
 <script setup>
 import NavBarComponent from './components/NavBarComponent.vue';
+import { ref } from 'vue';
 
 components: { NavBarComponent }
 
-const loggedIn = localStorage.getItem('user')
+const loggedIn = ref(localStorage.getItem('user'))
 
 </script>
 

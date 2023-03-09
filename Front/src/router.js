@@ -3,6 +3,8 @@ import Login from './components/pages/auth/Login.vue'
 import Register from './components/pages/auth/Register.vue'
 import BookIndex from './components/pages/book/Index.vue'
 import BookCreate from './components/pages/book/Create.vue'
+import BookShow from './components/pages/book/Show.vue'
+import BookEdit from './components/pages/book/Edit.vue'
 
 const routes = [
     {
@@ -23,6 +25,16 @@ const routes = [
     {
         path: '/book/create',
         component: BookCreate,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/book/show/:pathMatch(.*)*',
+        component: BookShow,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/book/update/:pathMatch(.*)*',
+        component: BookEdit,
         meta: { requiresAuth: true },
     },
 

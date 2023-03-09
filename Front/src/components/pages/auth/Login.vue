@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive } from 'vue';
+// import router from '../../../router';
 
 const data = reactive({
     email: "",
@@ -30,6 +31,7 @@ async function loginUser() {
     if (response.ok) {
         console.log(respData)
         localStorage.setItem('user', JSON.stringify(respData.user))
+        // router.push('/book');
         window.location.href = '/book';
         errors.value = []
     } else {

@@ -85,7 +85,6 @@ class BookController extends Controller
      * Display the specified resource.
      */
     public function show(Book $book) //: View|RedirectResponse
-
     {
         if (Auth::user()->role == User::ROLE_AUTHOR) {
 

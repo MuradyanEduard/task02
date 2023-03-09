@@ -58,7 +58,7 @@ class BookController extends Controller
                 $book->authors()->sync($request->authors);
             }
 
-            return response()->json(['user' => Auth::user(), 'messages' => ['Book successfully created!']], 201);
+            return response()->json(['messages' => ['Book successfully created!']], 201);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
@@ -68,11 +68,27 @@ class BookController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Book $book) //: View|RedirectResponse
+    {
+        if (Auth::user()->role == User::ROLE_AUTHOR) {
+
+            foreach ($book->authors as $author) {
+                if ($author->id == Auth::user()->id)
+                    return response()->json(['book' => $book->load('authors')], 202);
+            }
+
+            return response()->json(['book' => []], 202);
+        } else
+            return response()->json(['book' => $book->load('authors')], 202);
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(BookRequest $request, Book $book)
     {
-
         try {
             $cond = true;
             if (Auth::user()->role != User::ROLE_ADMIN) {

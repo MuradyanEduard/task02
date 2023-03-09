@@ -46,7 +46,7 @@ const count = ref()
                     </h5>
                 </div>
                 <div class="ml-5">
-                    <router-link to="#" v-if="showable"
+                    <router-link :to="`/book/show/${book.id}`" v-if="showable" :id=book.id
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Show
                         <i class="fa fa-eye w-4 h-4 ml-2 -mr-1" aria-hidden="true"></i>
@@ -68,7 +68,7 @@ const count = ref()
                 </span></h2>
 
 
-            <router-link to="#" v-if="ediatable"
+            <router-link :to="`/book/update/${book.id}`" v-if="ediatable"
                 class="m-1 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Edit
                 <i class="fa fa-edit w-4 h-4 ml-2 -mr-1"></i>
