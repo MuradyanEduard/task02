@@ -59,6 +59,7 @@ class AuthorController extends Controller
     {
 
         try {
+            $author->update($request->all());
             $author->books()->sync($request->books);
         } catch (\Throwable $th) {
             return response()->json([
@@ -68,6 +69,23 @@ class AuthorController extends Controller
 
         return response()->json(['user' => Auth::user(), 'messages' => ['Author successfully updated!']], 202);
 
+    }
+    /**
+     * Display the specified resource.
+     */
+    public function show(Author $author) //: View|RedirectResponse
+    {
+
+        if (Auth::user()->role == User::ROLE_AUTHOR) {
+
+            foreach ($author->authors as $author) {
+                if ($author->id == Auth::user()->id)
+                    return response()->json(['author' => $author->load('books')], 202);
+            }
+
+            return response()->json(['author' => []], 202);
+        } else
+            return response()->json(['author' => $author->load('books')], 202);
     }
 
     /**

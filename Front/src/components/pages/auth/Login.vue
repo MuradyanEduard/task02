@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive } from 'vue';
-// import router from '../../../router';
 
 const data = reactive({
     email: "",

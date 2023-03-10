@@ -151,6 +151,11 @@ class BookController extends Controller
         return response()->json(['user' => Auth::user(), 'messages' => ['Book successfully deleted!']], 202);
     }
 
+    public function getbooks()
+    {
+        return response()->json(['books' => Book::select('id', 'title')->get()]);
+    }
+
     public function search(Request $request)
     {
         if (!$request->search)

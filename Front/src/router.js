@@ -6,6 +6,14 @@ import BookCreate from './components/pages/book/Create.vue'
 import BookShow from './components/pages/book/Show.vue'
 import BookEdit from './components/pages/book/Edit.vue'
 
+import AuthorIndex from './components/pages/author/Index.vue'
+import AuthorCreate from './components/pages/author/Create.vue'
+import AuthorShow from './components/pages/author/Show.vue'
+import AuthorEdit from './components/pages/author/Edit.vue'
+
+import OrderIndex from './components/pages/order/Index.vue'
+import OrderConfirm from './components/pages/order/Confirm.vue'
+
 const routes = [
     {
         path: '/login',
@@ -33,8 +41,38 @@ const routes = [
         meta: { requiresAuth: true },
     },
     {
-        path: '/book/update/:pathMatch(.*)*',
+        path: '/book/edit/:pathMatch(.*)*',
         component: BookEdit,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/author',
+        component: AuthorIndex,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/author/create',
+        component: AuthorCreate,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/author/show/:pathMatch(.*)*',
+        component: AuthorShow,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/author/edit/:pathMatch(.*)*',
+        component: AuthorEdit,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/order',
+        component: OrderIndex,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/order/confirm',
+        component: OrderConfirm,
         meta: { requiresAuth: true },
     },
 

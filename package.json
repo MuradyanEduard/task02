@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@vueuse/core": "^9.13.0",
+    "laravel-vue-pagination": "^4.0.0"
+  }
+}

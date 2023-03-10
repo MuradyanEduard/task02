@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { basket } from '../composable/useBasket';
 
 defineProps({
     book: {
@@ -14,7 +15,7 @@ defineProps({
         type: Boolean,
         default: false,
     },
-    basket: {
+    showBasket: {
         type: Boolean,
         default: false,
     },
@@ -27,7 +28,30 @@ defineProps({
 
 const count = ref()
 
+function addBasket(book) {
 
+    // let basket = JSON.parse(localStorage.getItem('basket'));
+    let key = book.id;
+
+    // if (!basket) {
+    //     basket = {};
+    // }
+
+    if (!basket.value[key]) {
+        basket.value[key] = {
+            id: book.id,
+            count: 0,
+            price: book.price,
+            title: book.title
+        };
+    }
+
+    let newCount = count.value + basket.value[key].count;
+
+    if (book.count >= newCount) {
+        basket.value[key].count = newCount;
+    }
+}
 
 </script>
 
@@ -68,7 +92,7 @@ const count = ref()
                 </span></h2>
 
 
-            <router-link :to="`/book/update/${book.id}`" v-if="ediatable"
+            <router-link :to="`/book/edit/${book.id}`" v-if="ediatable"
                 class="m-1 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Edit
                 <i class="fa fa-edit w-4 h-4 ml-2 -mr-1"></i>
@@ -80,7 +104,7 @@ const count = ref()
                 <i class="fa fa-trash w-4 h-4 ml-2 -mr-1"></i>
             </router-link>
 
-            <div v-if="basket" class="relative w-full">
+            <div v-if="showBasket" class="relative w-full">
                 <div class="flex">
                     <div class="m-3">
                         <label for="count" class="block m-auto text-sm font-medium text-gray-900 dark:text-white">
@@ -92,11 +116,10 @@ const count = ref()
                             :placeholder=book.count required>
                     </div>
                     <div>
-                        <router-link to="#" href="/order/add" :data="{ id: book.id, count: count }" preserve-state
-                            method="POST"
+                        <button @click="addBasket(book)" method="POST"
                             class="m-1 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Add <i class="fa fa-shopping-cart w-4 h-4 ml-2 -mr-1" aria-hidden="true"></i>
-                        </router-link>
+                        </button>
                     </div>
                 </div>
             </div>

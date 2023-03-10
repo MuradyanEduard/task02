@@ -32,3 +32,4 @@ npm install -g @vue/cli
 vue add router
 https://github.com/tighten/ziggy#installation
 
+npm install laravel-vue-pagination

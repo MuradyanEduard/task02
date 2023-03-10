@@ -58,27 +58,27 @@ function logout() {
                         <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
-                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
+                                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
                             </router-link>
                         <a v-else-if="searchType == 1" href="#"
                             class="mr-2 block py-2 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
-                                        aria-current="page">
-                                            <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
+                                                aria-current="page">
+                                                    <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
 
-                                        </router-link> -->
+                                                </router-link> -->
                 </div>
                 <div class="mr-5" v-if="user.role == 2">
                     <!-- <router-link to="#"
-                                        class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
-                                        aria-current="page"><i class="fa fa-shopping-cart w-4 h-4 ml-2 -mr-1" aria-hidden="true"></i>
-                                    </router-link> -->
+                                                class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                                                aria-current="page"><i class="fa fa-shopping-cart w-4 h-4 ml-2 -mr-1" aria-hidden="true"></i>
+                                            </router-link> -->
                 </div>
 
                 <!-- Dropdown menu -->
@@ -138,7 +138,7 @@ function logout() {
                             aria-current="page">Book Create</router-link>
                     </li>
                     <li v-if="user.role != 1"><!---->
-                        <router-link to="/author/index"
+                        <router-link to="/author"
                             class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
                             aria-current="page">Authors</router-link>
                     </li>
@@ -148,7 +148,7 @@ function logout() {
                             aria-current="page">Author Create</router-link>
                     </li>
                     <li v-if="user.role != 1">
-                        <router-link to="/order/index"
+                        <router-link to="/order"
                             class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
                             aria-current="page">Orders</router-link>
                     </li>

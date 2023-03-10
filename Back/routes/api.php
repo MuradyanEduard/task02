@@ -19,6 +19,7 @@ use App\Http\Controllers\API\OrderController;
 
 
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/book/get', [BookController::class, 'getbooks']);
     Route::get('/book', [BookController::class, 'index']);
     Route::get('/book/show/{book}', [BookController::class, 'show']);
     Route::post('/book/store/', [BookController::class, 'store']);
@@ -27,6 +28,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Route::get('/book/search/', [BookController::class, 'search']);
     Route::get('/author/get', [AuthorController::class, 'getauthors']);
     Route::get('/author', [AuthorController::class, 'index']);
+    Route::get('/author/show/{author}', [AuthorController::class, 'show']);
     Route::post('/author/store/', [AuthorController::class, 'store']);
     Route::put('/author/update/{author}', [AuthorController::class, 'update']);
     Route::delete('/author/destroy/{author}', [AuthorController::class, 'destroy']);

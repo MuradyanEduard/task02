@@ -7,8 +7,10 @@ components: [Multiselect]
 const selectedOption = ref([])
 
 const user = JSON.parse(localStorage.getItem('user'))
-const id = window.location.href.split("/").slice(-1)[0];
-const book = ref({
+const message = ref()
+
+const book = reactive({
+    id: window.location.href.split("/").slice(-1)[0],
     title: "",
     count: 0,
     price: 0,
@@ -22,13 +24,11 @@ const errors = ref({
     authors: ""
 })
 
-const message = ref()
-
 getBook()
 getAuthors()
 
 async function getBook() {
-    const response = await fetch('http://127.0.0.1:8000/api/book/show/' + id, {
+    const response = await fetch('http://127.0.0.1:8000/api/book/show/' + book.id, {
         method: 'GET',
         headers: {
             "Authorization": 'Bearer ' + user.api_token,
@@ -39,9 +39,12 @@ async function getBook() {
 
     const respData = await response.json()
 
-    if (response.ok)
-        book.value = respData.book
-    else {
+    if (response.ok) {
+        book.title = respData.book.title
+        book.count = respData.book.count
+        book.price = respData.book.price
+
+        selectedOption.value = respData.book.authors.map(a => { return { "value": a.id, "label": a.name } })
     }
 }
 
@@ -58,18 +61,17 @@ async function getAuthors() {
     const respData = await response.json()
 
     if (response.ok) {
-        respData.authors.map(x => book.value.authors[x.id] = x.name)
-        console.log(book.value.authors)
+        book.authors = respData.authors.map(a => { return { "value": a.id, "label": a.name } })
         message.value = respData.messages;
         errors.value = []
-    } else {
-        errors.value = respData.errors;
-        console.log(errors.value)
     }
 }
 
 async function updateBook() {
-    const response = await fetch('http://127.0.0.1:8000/api/book/update/' + id, {
+    message.value = null;
+    let ids = selectedOption.value.map(x => { return x.value })
+
+    const response = await fetch('http://127.0.0.1:8000/api/book/update/' + book.id, {
         method: 'PUT',
         headers: {
             "Authorization": 'Bearer ' + user.api_token,
@@ -79,17 +81,19 @@ async function updateBook() {
             title: book.title,
             count: book.count,
             price: book.price,
-            authors: book.authors
+            authors: ids
         })
     })
 
     const respData = await response.json()
 
-    if (response.ok)
-        book.value = respData.book
-    else {
-        console.log(respData)
+    if (response.ok) {
+        message.value = respData.messages;
+    } else {
+        errors.value = respData.errors;
     }
+
+
 }
 
 </script>
@@ -97,9 +101,13 @@ async function updateBook() {
 <template>
     <NavBarComponent :user="user" />
     <div class="m-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <div v-for="m in messages"
-            class="p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-            <span class="font-medium"> {{ m }} </span>
+        <div v-if="message" class="p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+            role="alert">
+            <span class="block sm:inline">
+                <div class="col-12">
+                    <div class="alert alert-danger" v-html="message"></div>
+                </div>
+            </span>
         </div>
         <a href="#">
             <img class="rounded-t-lg" src="/images/book.jpg" alt="" />
@@ -159,9 +167,8 @@ async function updateBook() {
                 </div>
                 <div v-if="user.role == 0">
                     <h2 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Authors:</h2>
-                    <Multiselect v-model="selectedOption" mode="tags" :close-on-select="false" :searchable="true"
-                        :create-option="true" :options="book.authors" />
-
+                    <Multiselect mode="tags" v-model="selectedOption" placeholder="Select options" :close-on-select="false"
+                        :searchable="true" :object="true" :options="book.authors" />
                     <div v-if="errors.authors"
                         class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mt-3 rounded relative" role="alert">
                         <span class="block sm:inline">

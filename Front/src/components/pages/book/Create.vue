@@ -5,9 +5,9 @@ import Multiselect from '@vueform/multiselect'
 components: [Multiselect]
 
 const data = reactive({
-    name: "",
-    count: 0,
-    price: 0,
+    title: "",
+    count: "",
+    price: "",
     aurhors: {}
 })
 
@@ -40,10 +40,6 @@ async function getAuthors() {
 
     if (response.ok) {
         respData.authors.map(x => data.aurhors[x.id] = x.name)
-
-        console.log(data.aurhors)
-    } else {
-        console.log(...respData.authors)
     }
 }
 
@@ -67,12 +63,11 @@ async function createBook() {
     const respData = await response.json()
 
     if (response.ok) {
-        console.log(respData)
         message.value = respData.messages;
         errors.value = []
     } else {
+        message.value = null
         errors.value = respData.errors;
-        console.log(errors.value)
     }
 
 }
