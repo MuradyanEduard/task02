@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import Multiselect from '@vueform/multiselect'
+import router from '../../../router'
 
 components: [Multiselect]
 
@@ -40,6 +41,8 @@ async function getAuthors() {
 
     if (response.ok) {
         respData.authors.map(x => data.aurhors[x.id] = x.name)
+    } else {
+        router.push({ path: '/book' })
     }
 }
 

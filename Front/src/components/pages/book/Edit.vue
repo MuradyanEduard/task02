@@ -2,6 +2,7 @@
 
 import { ref, reactive } from 'vue';
 import Multiselect from '@vueform/multiselect'
+import router from '../../../router'
 
 components: [Multiselect]
 const selectedOption = ref([])
@@ -64,7 +65,11 @@ async function getAuthors() {
         book.authors = respData.authors.map(a => { return { "value": a.id, "label": a.name } })
         message.value = respData.messages;
         errors.value = []
+    } else {
+        console.log(respData)
+        router.push({ path: '/book' })
     }
+
 }
 
 async function updateBook() {
@@ -89,6 +94,7 @@ async function updateBook() {
 
     if (response.ok) {
         message.value = respData.messages;
+        errors.value = [];
     } else {
         errors.value = respData.errors;
     }
